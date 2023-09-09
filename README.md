@@ -1,72 +1,40 @@
-# Project Name
+# International Food Security
 
-example image:
-
-
-![alternative text](reports/img/pic01.jpg)
+![](img/Global-Food-Security.png)
 
 
-#### -- Project Status: [Active, On-Hold, Completed]
+#### -- Project Status: [Completed]
 
 ## Project Intro/Objective
-The purpose of this project is ________. (Describe the main goals of the project. Limit to a short paragraph, 3-6 Sentences)
+**Food security** is an important component of international aid programs targeting hunger and malnutrition, and still poses major challenges in vulnerable populations and countries (USAID, August 2023). **Climate change** is threatening these efforts and improvements with wide-ranging consequences (Gregory et al., 2005). For example, more extreme weather events like hurricanes or floods become more probable and frequent, potentially destroying harvests (Drijfhou, 2015). **Climate-induced food insecurity** can contribute to forced migration and conflict, as communities may be displaced in search of better conditions or resources (McMichael, 2014). Especially **higher temperatures** as part of climate change have a big impact on food security (Redden et al., 2014). They can **endanger crop yields** by several mechanisms. Firstly, they can reduce the duration of crop growth, and affect the flowering and pollination, potentially leading to less crop yields (Ritchie, & Nesmith, 1991). Second, increased evaporation due to higher temperatures together with altered rainfall patterns can lead to water scarcity, limiting agricultural productivity and leading to crop failures (Mancosu et al., 2015). Third, higher temperatures facilitate pests and diseases that can destroy crops (Dhawanet al, 2013). In turn, less crops are also affecting fodder availability for live stock, thus also threatening food security (Thornton et al., 2007).
 
-### Partner
-* [Name of Partner organization/Government department etc..]
-* Website for partner
-* Partner contact: [Name of Contact]
-* If you do not have a partner leave this section out
+### Contributing Members
+* Annalena Kreischer
+* Ansam Zedan
 
 ### Methods Used
 * Inferential Statistics
 * Machine Learning
 * Data Visualization
 * Predictive Modeling
-* etc.
 
 ### Technologies
 * R
-* Python
-* D3
-* PostGres, MySql
-* Pandas, jupyter
-* HTML
-* JavaScript
-* etc.
-
-## Project Description
-(Provide more detailed overview of the project.
-Talk a bit about your data sources and what questions and hypothesis you are exploring.
-What specific data analysis/visualization and modelling work are you using to solve the
-problem? What blockers and challenges are you facing?
-Feel free to number or bullet point things here)
-
-## Getting Started
-
-1. Clone this repo (for help see this [tutorial](https://help.github.com/articles/cloning-a-repository/)).
-2. Raw Data is being kept [here](Repo folder containing raw data) within this repo.
-
-    *If using offline data mention that and how they may obtain the data from the froup)*
-
-3. Data processing/transformation scripts are being kept [here](Repo folder containing data processing scripts/notebooks)
-4. etc...
-
-*If your project is well underway and setup is fairly complicated (ie. requires installation of many packages)
-create another "setup.md" file and link to it here*
-
-5. Follow setup [instructions](Link to file)
-
-## Featured Notebooks/Analysis/Deliverables
-* [Notebook/Markdown/Slide Deck Title](link)
-* [Notebook/Markdown/Slide DeckTitle](link)
-* [Blog Post](link)
-
-
-## Contributing Members
-
-**Team Leads (Contacts) : [Full Name](https://github.com/[github handle])**
-
-#### Other Members:
-
- - [Full Name](https://github.com/[github handle])
- - [Full Name](https://github.com/[github handle])
+* Shinnyapp
+* ggplot2
+* tidyr    
+* forecast  
+* tseries   
+* lubridate
+* corrplot
+* tidyverse
+* car
+* randomForest
+* lattice
+* gridExtra
+* rnaturalearth
+* rnaturalearthdata
+* grid
+* patchwork
+* corrr
+* pastecs
