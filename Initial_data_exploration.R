@@ -1,3 +1,5 @@
+#######
+# Import data
 library(tidyverse)   #for dplyr
 library(magrittr)   #for %>%
 library(ggplot2)  #for graphs
@@ -10,7 +12,6 @@ library(osmdata)
 library(maptiles) ## for get_tiles() / used instead of OpenStreetMap
 library(tidyterra)
 
-#TODO check preparation file
 
 ### load data sets
 # 1) dataset for temperature changes in countries 1961 - 2003 in C°
@@ -19,8 +20,10 @@ temperature_raw <- read.csv("temperatures.csv",
                         stringsAsFactors=FALSE, 
                         fileEncoding="latin1")
 # 2) dataset for wheat production in countries from 1996 - 2020
+# We ended up not using this file
     # https://www.kaggle.com/datasets/rajkumarpandey02/wheat-production-statistics
 #wheat_raw<- read.csv("wheat.csv")
+
 # 3) dataset for food security in 1980 - 2013
     # https://data.nal.usda.gov/dataset/international-food-security/resource/45fda032-a799-480b-870b-e085e2378f1a#{}
 food_raw <- read.csv("food_security.csv")
@@ -47,6 +50,8 @@ colnames(temperature_long)
 str(temperature_long)
 
 # cast "Year" from chr to int
+# this has proven to be problematic for data visualization so it was commented
+# especially converting year to integer it gave it numbers instead of the actual year
 # temperature_long$Year <- as.integer(temperature_long$Year)
 
 # filter: 1980 - 2013 (preparation for merge with food)
@@ -157,20 +162,6 @@ colnames(merged_5_final)
 merged_5_final$Year <- factor(merged_5_final$Year)
 
 write.csv(merged_5_final, file = "merged_5_final")
-########################################################################################################
-#################################### descriptives ######################################################
-########################################################################################################
-
-
-
-########################################################################################################
-#################################### solo temperature ##################################################
-########################################################################################################
-
-
-########################################################################################################
-####################################### solo temp ######################################################
-########################################################################################################
 
 ### graph 1: temp change over years in one country
 random_country <- sample(unique(merged_5_final$Country), 1)
@@ -201,6 +192,7 @@ ggplot(selected_country, aes(x = Year, y = Temperature))+
   geom_smooth(method = lm, se = FALSE)
 
 color_palette <- colorRampPalette(c("red", "blue"))
+
 # Creating two lattice plots
 import_plot <- barchart(
   Year ~ Total.Grains.Cereals.Root.Import.Quantity.1000.MT,
@@ -303,8 +295,6 @@ head(world)
 
 ?st_read
 st_drivers()
-#options("SHAPE_RESTORE_SHX" = "YES")
-#world <- st_read("C:/Users/Ansam/Documents/HSLU/Semester 1 Feb 2023/R-Bootcamp/group_project/world-administrative-boundaries/world-administrative-boundaries.shp")
 
 data <- subset(merged_5_final, Year == 1991)
 world_data <- merge(world, data, by.x = "name", by.y = "Country")
@@ -333,7 +323,7 @@ combined_plot <- ggplot() +
 # Show the combined plot
 print(combined_plot)
 
-###################3
+###################
 # Line plots
 read.csv(file = "merged_5_final.csv")
 d.merged <- read.csv("merged_5_final.csv")
@@ -354,6 +344,4 @@ ggplot() +
                        color = 'Country'
             )) +
   labs(x = "Year",
-       y = 'Temperature') #+
-#scale_fill_manual(values = c("blue", "red")) +
-#theme_minimal()
+       y = 'Temperature') 

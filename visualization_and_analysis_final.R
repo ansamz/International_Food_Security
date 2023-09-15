@@ -27,8 +27,6 @@ merged_5_final = read.csv("merged_5_final.csv")
 ################
 stat.desc(merged_5_final)
 
-# Ansam: going to postpone this command if needed
-#merged_5_final$Year <- as.integer(as.character(merged_5_final$Year))
 dim(merged_5_final)
 colnames(merged_5_final)
 data2 <- drop_na(merged_5_final)
@@ -193,9 +191,6 @@ ggplot(combined_data, aes(x = as.numeric(Year), y = Percentage, color = Type)) +
        x = "Year",
        y = "Percentage",
        fill = "Type") +
-  #scale_fill_manual(values = c("Import_Percentage" = "#bdc9e1", 
-  # "Export_Percentage" = "#02818a")) +
-  #scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) +
   theme_minimal() +
   theme(legend.position = "bottom", 
         panel.grid.major = element_blank(), 
@@ -212,15 +207,13 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 head(world)
 
 st_drivers()
-#options("SHAPE_RESTORE_SHX" = "YES")
-#world <- st_read("C:/Users/Ansam/Documents/HSLU/Semester 1 Feb 2023/R-Bootcamp/group_project/world-administrative-boundaries/world-administrative-boundaries.shp")
 
 data.sub.year <- subset(merged_5_final, Year == 1991)
 world_data <- merge(world, data.sub.year, by.x = "name", by.y = "Country")
 colnames(world_data)
 dim(world_data)
 
-#missing values
+#Check missing values
 colSums(is.na(world_data))
 
 
@@ -442,7 +435,7 @@ forecast_values <- forecast(arima_model, h = 50)
 print(forecast_values)
 plot(forecast_values)
 
-# FORCAST different variable not the temperature (in the app)
+# Not enough data for ARIMA forecasting, will not add it to the app
 
 
 ########################################################################################################
@@ -471,7 +464,9 @@ summary(lm_model)
 
 # Collinearity Check with Variance Inflation Factor 
 vif(lm_model)
-# result
+
+##########
+# results:
 # Total.Grains.Cereals.Root.Production.Quantity.1000.MT         Total.Grains.Cereals.Root.Food.Supply.1000.MT 
 # 238.28729                                                     191.23529 
 # Total.Grains.Cereals.Root.Area.Harvested.1000.Ha 
@@ -479,14 +474,18 @@ vif(lm_model)
 # VIF is significantly greater than 1 (commonly a threshold of 5 or 10 is used), 
 # it indicates potential multicollinearity.
 
-# explanation
+##############
+# explanation of results
 # means that two or more independent variables in the model are highly correlated, which can lead to several issues:
 #   Inflated Standard Errors: High multicollinearity results in inflated standard errors for the regression coefficients. This means that the estimated coefficients become less precise and less reliable, leading to wider confidence intervals.
 # Difficulty in Interpretation: When independent variables are highly correlated, it can become challenging to interpret the individual impact of each variable on the dependent variable because their effects are confounded.
 # Unstable Coefficients: Small changes in the data can lead to significant changes in the estimated coefficients, making the model unstable.
 
-# steps to do: collect more data, or remove those variables
+# steps to do for the future: collect more data, or remove those variables
 
+########################################################################################################
+##################################### Random Forest Prediction ################################################
+########################################################################################################
 # prediction using Random Forest
 # Split data into training and testing sets
 set.seed(42) # For reproducibility and the answer for everything

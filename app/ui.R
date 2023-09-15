@@ -4,14 +4,38 @@ library(shiny)
 data <- read.csv("data/merged_5_final.csv")
 formatted_years <- format(data$Year, format = "####")
 
+column_names_edited <- c("X", "Country", "Year", "Temperature", 
+                  "Total Grains, Cereals and Root Production Quantity in 1000MT",
+                  "Total Grains, Cereals and Root Food Supply in 1000MT", 
+                  "Total Grains, Cereals and Root Area Harvested in 1000Ha", 
+                  "Population in Millions", "GDP in US dollars per person", 
+                  "Gross Domestic Product constant prices percent change", 
+                  "Food Supply Grain in 1000MT per year", 
+                  "Food Supply Grain kg/capita/year", 
+                  "Grains, Cereals and Root Food Availability kg/capita/year", 
+                  "Total Grains, Cereals and Root Export Quantity in 1000MT", 
+                  "Total Grains, Cereals and Root Import Quantity in 1000MT", 
+                  "Continent")
+column_names <- c("X", "Country", "Year", "Temperature", 
+                  "Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
+                  "Total.Grains.Cereals.Root.Food.Supply.1000.MT", 
+                  "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha", 
+                  "Population.Million", "GDP.US.dollars.per.person", 
+                  "Gross.Domestic.Product.constant.prices.Percent.change", 
+                  "Food.Supply.Grain.Equiv.1000.MT.yr", "Food.Supply.Grain.Equiv.kg.cap.yr", 
+                  "Grains.Cereals.Root.Food.Availability.per.capita.kg.cap.yr", 
+                  "Total.Grains.Cereals.Root.Export.Quantity.1000.MT", 
+                  "Total.Grains.Cereals.Root.Import.Quantity.1000.MT", "Continent")
+
 fluidPage(
-  navbarPage("Food Security And Temperature Change",
+  titlePanel("Food Security And Temperature Change"),
+  navbarPage("",
              tabPanel("World Map",
                       sidebarLayout(
                         sidebarPanel(
-                          sliderInput("year", "Select Year", min(data$Year), max(data$Year), value = min(data$Year), step = 1, sep = ""),
-                          selectInput("map_variable", "Select Map Variable", choices = colnames(data)[4:14], 
-                                      selected = "Total.Grains.Cereals.Root.Production.Quantity.1000.MT"), width=2
+                          sliderInput("year", "Select a Year", min(data$Year), max(data$Year), value = min(data$Year), step = 1, sep = ""),
+                          selectInput("map_variable", "Select a Variable", choices = column_names_edited[4:14],
+                                      selected = "Total Grains, Cereals and Root Production Quantity in 1000MT"), width=3
                         ),
                         mainPanel(
                           fluidRow(
@@ -28,7 +52,7 @@ fluidPage(
                         sidebarPanel(
                           selectInput("country1", "Select Country 1", choices = unique(data$Country)),
                           selectInput("country2", "Select Country 2", choices = unique(data$Country), selected = "Egypt"),
-                          selectInput("map_variable2", "Select Map Variable", choices = colnames(data)[4:14]), width=2
+                          selectInput("map_variable2", "Select Map Variable", choices = column_names_edited[4:14]), width=3
                         ),
                         mainPanel(
                           plotOutput("country_comparison")
@@ -38,7 +62,7 @@ fluidPage(
              tabPanel("Country Detailed View",
                       sidebarLayout(
                         sidebarPanel(
-                          selectInput("country", "Select Country", choices = unique(data$Country), selected = "Indonesia"), width=2
+                          selectInput("country", "Select Country", choices = unique(data$Country), selected = "Indonesia"), width=3
                         ),
                         mainPanel(
                           fluidRow(
@@ -56,13 +80,13 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           selectInput("country_pick", "Select Country", choices = unique(data$Country), selected = "Pakistan"), 
-                          selectInput("selected_items", "Select Variables", choices = colnames(data)[4:14], 
+                          selectInput("selected_items", "Select Variables", choices = column_names_edited[4:14], 
                                       multiple = TRUE, selected = c("Temperature",                                  
-                                                                    "Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
-                                                                    "Total.Grains.Cereals.Root.Food.Supply.1000.MT",
-                                                                    "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha" ,
-                                                                    "Population.Million",
-                                                                    "GDP.US.dollars.per.person")), width=2
+                                                                    "Total Grains, Cereals and Root Production Quantity in 1000MT",
+                                                                    "Total Grains, Cereals and Root Food Supply in 1000MT",
+                                                                    "Total Grains, Cereals and Root Area Harvested in 1000Ha" ,
+                                                                    "Population in Millions", "GDP in US dollars per person")), width=3
+                  
                         ),
                         mainPanel(
                           fluidRow(
@@ -78,7 +102,7 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           selectInput("country3", "Select Country", choices = unique(data$Country)),
-                          selectInput("map_variable3", "Select Variable to Predict", choices = colnames(data)[5:14]), width=2
+                          selectInput("map_variable3", "Select Variable to Predict", choices = column_names_edited[5:14]), width=3
                         ),
                         mainPanel(
                           fluidRow(
