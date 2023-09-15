@@ -135,6 +135,7 @@ colnames(merged_4_wide)
 
 merged_4_wide <- merged_4_wide %>% 
   rename(
+    "Temperature.Change" = "Temperature",
     "Total.Grains.Cereals.Root.Production.Quantity.1000.MT" = 
       "Total Grains/Cereals and Root Crops (R&T), Production Quantity, Grain Equiv. 1000 MT",
     "Total.Grains.Cereals.Root.Food.Supply.1000.MT" = 
@@ -162,7 +163,7 @@ colnames(merged_5_final)
 merged_5_final$Year <- factor(merged_5_final$Year)
 
 #### check if there are a lot of missing values for temperature in every country
-missing_values <- merged_5_final %>% group_by(Country) %>% summarise(Missing_Values = sum(is.na(Temperature)))
+missing_values <- merged_5_final %>% group_by(Country) %>% summarise(Missing_Values = sum(is.na(Temperature.Change)))
 missing_values %>% filter(Missing_Values > 0)
 
 # delete countries having more than 50% missing values, i.e. >= 16 NAs

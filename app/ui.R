@@ -4,7 +4,7 @@ library(shiny)
 data <- read.csv("data/merged_5_final.csv")
 formatted_years <- format(data$Year, format = "####")
 
-column_names_edited <- c("X", "Country", "Year", "Temperature", 
+column_names_edited <- c("X", "Country", "Year", "Temperature Change", 
                   "Total Grains, Cereals and Root Production Quantity in 1000MT",
                   "Total Grains, Cereals and Root Food Supply in 1000MT", 
                   "Total Grains, Cereals and Root Area Harvested in 1000Ha", 
@@ -16,7 +16,7 @@ column_names_edited <- c("X", "Country", "Year", "Temperature",
                   "Total Grains, Cereals and Root Export Quantity in 1000MT", 
                   "Total Grains, Cereals and Root Import Quantity in 1000MT", 
                   "Continent")
-column_names <- c("X", "Country", "Year", "Temperature", 
+column_names <- c("X", "Country", "Year", "Temperature.Change", 
                   "Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
                   "Total.Grains.Cereals.Root.Food.Supply.1000.MT", 
                   "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha", 
@@ -81,7 +81,7 @@ fluidPage(
                         sidebarPanel(
                           selectInput("country_pick", "Select Country", choices = unique(data$Country), selected = "Pakistan"), 
                           selectInput("selected_items", "Select Variables", choices = column_names_edited[4:14], 
-                                      multiple = TRUE, selected = c("Temperature",                                  
+                                      multiple = TRUE, selected = c("Temperature Change",                                  
                                                                     "Total Grains, Cereals and Root Production Quantity in 1000MT",
                                                                     "Total Grains, Cereals and Root Food Supply in 1000MT",
                                                                     "Total Grains, Cereals and Root Area Harvested in 1000Ha" ,

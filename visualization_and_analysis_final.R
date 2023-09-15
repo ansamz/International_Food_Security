@@ -42,7 +42,7 @@ sum(is.na(data2))
 random_country <- sample(unique(merged_5_final$Country), 1)
 selected_country <- merged_5_final[merged_5_final$Country == random_country, ]
 
-ggplot(selected_country, aes(x = Year, y = Temperature))+
+ggplot(selected_country, aes(x = Year, y = Temperature.Change))+
   geom_line(col = "grey50") +
   geom_point()+
   geom_smooth(method = lm, se = FALSE) +
@@ -57,7 +57,7 @@ ggplot(selected_country, aes(x = Year, y = Temperature))+
 #for specific country (optional, e.g. Rwanda)
 selected_country_fix <- merged_5_final[merged_5_final$Country == "Cameroon", ]
 
-ggplot(selected_country_fix, aes(x = Year, y = Temperature))+
+ggplot(selected_country_fix, aes(x = Year, y = Temperature.Change))+
   geom_line(col = "grey50") +
   geom_point()+
   geom_smooth(method = lm, se = FALSE) +
@@ -70,7 +70,7 @@ ggplot(selected_country_fix, aes(x = Year, y = Temperature))+
         plot.subtitle = element_text(hjust = 0.5))
 
 # addition: subplots for all countries
-ggplot(merged_5_final, aes(x = Year, y = Temperature))+
+ggplot(merged_5_final, aes(x = Year, y = Temperature.Change))+
   geom_line(col = "grey50") +
   geom_point()+
   geom_smooth(method = lm, se = FALSE) +
@@ -252,16 +252,16 @@ country2_data <- d.merged[d.merged$Country == 'Mali', ]
 ggplot() +
   geom_line(data = country1_data, 
             aes_string(x = 'Year', 
-                       y = 'Temperature',
+                       y = 'Temperature.Change',
                        color = 'Country'
             )) +
   geom_line(data = country2_data, 
             aes_string(x = 'Year', 
-                       y = 'Temperature',
+                       y = 'Temperature.Change',
                        color = 'Country'
             )) +
   labs(x = "Year",
-       y = 'Temperature') +
+       y = 'Temperature.Change') +
 theme_minimal()
 
 
@@ -300,20 +300,20 @@ ggplot(data2, aes(x = GDP.US.dollars.per.person, y = Total.Grains.Cereals.Root.E
 ##############
 
 # Time series of temperature change varies over time.
-ggplot(data2, aes(x=Year, y=`Temperature`, color=Country)) +
+ggplot(data2, aes(x=Year, y=`Temperature.Change`, color=Country)) +
   geom_line() +
   labs(x="Year", y="Temperature Change", 
        title="Time Series Plot of Temperature Change")
 
 # Temprature change for each country
-ggplot(data2, aes(x=Year, y=`Temperature`)) +
+ggplot(data2, aes(x=Year, y=`Temperature.Change`)) +
   geom_line() +
   facet_wrap(~Country) +
   labs(x="Year", y="Temperature Change", 
        title="Yearly Plot of Temperature Change for each Country")
 
 # Temprature change for each continent
-ggplot(data2, aes(x=Year, y=`Temperature`)) +
+ggplot(data2, aes(x=Year, y=`Temperature.Change`)) +
   geom_line() +
   geom_smooth(method="lm", se=FALSE, color="red") + # Add correlation line
   facet_wrap(~Continent) +
@@ -375,7 +375,7 @@ ggplot(correlation_data, aes(x = Variable1, y = Variable2, fill = Correlation)) 
 # Box Plot for each Continent: This will show the distribution of 
 # temperature change for each continent.
 # note: we have little data from the americas
-ggplot(merged_5_final, aes(x = Continent, y = Temperature)) +
+ggplot(merged_5_final, aes(x = Continent, y = Temperature.Change)) +
   geom_boxplot(fill = "#9ecae1", color = "#095185", alpha = 0.7) +  # Customize box appearance
   labs(x = "Continent", y = "Temperature Change", 
        title = "Box Plot of Temperature Change for each Continent") +
@@ -386,7 +386,7 @@ ggplot(merged_5_final, aes(x = Continent, y = Temperature)) +
 # Total.Grains.Cereals.Root.Production.Quantity.1000.MT: This will 
 # show the relationship between Temperature change and Total Grains/ 
 # Cereals/ Root Production Quantity.
-ggplot(merged_5_final, aes(x=`Temperature`, y=`Total.Grains.Cereals.Root.Production.Quantity.1000.MT`)) +
+ggplot(merged_5_final, aes(x=`Temperature.Change`, y=`Total.Grains.Cereals.Root.Production.Quantity.1000.MT`)) +
   geom_point(
     color="#3182bd",
     fill="#9ecae1",
@@ -401,14 +401,14 @@ ggplot(merged_5_final, aes(x=`Temperature`, y=`Total.Grains.Cereals.Root.Product
   theme(plot.background = element_rect(fill = "white"))
 
 # Bar Plot by Continent
-ggplot(merged_5_final, aes(x = Continent, y = `Temperature`, fill = Continent)) +
+ggplot(merged_5_final, aes(x = Continent, y = `Temperature.Change`, fill = Continent)) +
   geom_bar(stat = "summary", fun = "mean") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.background = element_rect(fill = "white")) +
   labs(title = "Mean Temperature Change per Continent")
 
 # Box Plot of Temperature change per year
-ggplot(merged_5_final, aes(x = Year, y = `Temperature`, group = Year)) +
+ggplot(merged_5_final, aes(x = Year, y = `Temperature.Change`, group = Year)) +
   geom_boxplot(fill = "#095185") +  
   theme_minimal() +
   theme(plot.background = element_rect(fill = "white")) +
@@ -423,11 +423,11 @@ ggplot(merged_5_final, aes(x = Year, y = `Temperature`, group = Year)) +
 # ARIMA model for forecasting. Before that, ensure your data is stationary 
 # using the Augmented Dickey-Fuller (ADF) test.
 # we use data2 here because there are a lot of missing values 
-adf.test(data2$`Temperature`, alternative = "stationary")
+adf.test(data2$`Temperature.Change`, alternative = "stationary")
 #p-value = 0.1 -> less than 0.05 then we can do ARIMA
 
 # Forecasting Model (ARIMA)
-ts_data <- ts(data2$`Temperature`, start = c(1980), frequency = 1)
+ts_data <- ts(data2$`Temperature.Change`, start = c(1980), frequency = 1)
 arima_model <- auto.arima(ts_data)
 forecast_values <- forecast(arima_model, h = 50)
 
@@ -445,19 +445,19 @@ plot(forecast_values)
 # correlation test and t-test to check if the temperature is 
 # connected to the rest of the features.
 # correlation test
-cor.test(data2$`Temperature`, 
+cor.test(data2$`Temperature.Change`, 
          data2$`Total.Grains.Cereals.Root.Production.Quantity.1000.MT`)
 
 #T.test
-t.test(data2$`Temperature`, 
+t.test(data2$`Temperature.Change`, 
        data2$`Total.Grains.Cereals.Root.Production.Quantity.1000.MT`)
 
 # ANOVA
-anova_result <- aov(`Temperature` ~ Continent, data = data2)
+anova_result <- aov(`Temperature.Change` ~ Continent, data = data2)
 print(anova_result)
 
 # Regression Analysis
-lm_model <- lm(`Temperature` ~ `Total.Grains.Cereals.Root.Production.Quantity.1000.MT` + 
+lm_model <- lm(`Temperature.Change` ~ `Total.Grains.Cereals.Root.Production.Quantity.1000.MT` + 
                  `Total.Grains.Cereals.Root.Food.Supply.1000.MT` + `Total.Grains.Cereals.Root.Area.Harvested.1000.Ha`, 
                data = data2)
 summary(lm_model)

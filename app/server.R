@@ -23,7 +23,7 @@ data <- read.csv("data/merged_5_final.csv")
 
 # dict
 data_map_features_names <- c(
-                  "Temperature" = "Temperature change",                                  
+                  "Temperature.Change" = "Temperature Change",                                  
                   "Total.Grains.Cereals.Root.Production.Quantity.1000.MT" = "Production Quantity (1000 MT) Grains Cereals and Roots",
                   "Total.Grains.Cereals.Root.Food.Supply.1000.MT" = "Food Supply (1000 MT) Grains Cereals and Root",
                   "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha" = "Area Harvested (1000 hectares) Grains Cereals and Root",
@@ -37,7 +37,7 @@ data_map_features_names <- c(
                   "Total.Grains.Cereals.Root.Import.Quantity.1000.MT" = "Import quantity Grains (Total), Cereals and Root"
                 )
 
-column_names <- c( "X"="X", "Country"="Country", "Year"="Year", "Temperature"="Temperature", 
+column_names <- c( "X"="X", "Country"="Country", "Year"="Year", "Temperature Change"="Temperature.Change", 
                    "Total Grains, Cereals and Root Production Quantity in 1000MT"="Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
                    "Total Grains, Cereals and Root Food Supply in 1000MT"="Total.Grains.Cereals.Root.Food.Supply.1000.MT", 
                    "Total Grains, Cereals and Root Area Harvested in 1000Ha"="Total.Grains.Cereals.Root.Area.Harvested.1000.Ha", 
@@ -51,9 +51,9 @@ column_names <- c( "X"="X", "Country"="Country", "Year"="Year", "Temperature"="T
                    "Total Grains, Cereals and Root Import Quantity in 1000MT"="Total.Grains.Cereals.Root.Import.Quantity.1000.MT", 
                    "Continent"="Continent")
 
-################################## tab 1 #############################################
-### tab 1, graph 1 world map of chosen variable
 function(input, output) {
+  ################################## tab 1 #############################################
+  ### tab 1, graph 1 world map of chosen variable
   output$world_map <- renderPlot({
     selected_year_data <- data[data$Year == input$year, ]
     world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -74,7 +74,7 @@ function(input, output) {
   
 ### tab 1, graph 2 temperature change against chosen variable
   output$relationship <- renderPlot({
-    ggplot(data, aes_string(x="Temperature", y=column_names[input$map_variable])) +
+    ggplot(data, aes_string(x="Temperature.Change", y=column_names[input$map_variable])) +
       geom_point(
         color="#3182bd",
         fill="#9ecae1",
@@ -82,10 +82,10 @@ function(input, output) {
         alpha=0.3,
         size=2
       ) +
-      ggtitle(paste("Temperature Change vs.", input$map_variable), 
+      ggtitle(paste("Temperature Change vs.", column_names[input$map_variable]), 
               subtitle = "over all countries and years")+
       labs(x="Temperature Change", 
-           y=data_map_features_names[input$map_variable]) + 
+           y=data_map_features_names[column_names[input$map_variable]]) + 
       theme(plot.background = element_rect(fill = "white"),
             panel.border = element_blank())+ 
       theme_minimal() +
@@ -111,7 +111,7 @@ function(input, output) {
                            color = 'Country'
                 )) +
       labs(x = "Year",
-           y = data_map_features_names[input$map_variable2]) +
+           y = data_map_features_names[column_names[input$map_variable2]]) +
       ggtitle(paste(data_map_features_names[input$map_variable2], "in", input$country1, "and", input$country2)) + 
       theme(plot.background = element_rect(fill = "white"),
             plot.title = element_text(hjust = 0.5, face = "bold"),
@@ -174,7 +174,7 @@ function(input, output) {
   output$third_plot <- renderPlot({
     country_data <- data[data$Country == input$country, ]
     
-    ggplot(country_data, aes(x = Year, y = Temperature))+
+    ggplot(country_data, aes(x = Year, y = Temperature.Change))+
       geom_line(col = "grey50") +
       geom_point()+
       geom_smooth(method = lm, se = FALSE) +
