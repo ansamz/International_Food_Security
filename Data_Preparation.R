@@ -87,7 +87,7 @@ unique(merged_3$Item)
 values_to_match <- c("Area Harvested", "Production Quantity", 
                      "Food Supply", "Import Quantity", "Export Quantity", 
                      "Total Population - Both Sexes", 
-                     "WB GDP (constant 2005 US$) / FAO population)",
+                     "WB GDP (constant 2005 US$) / FAO population",
                      "Gross Domestic Product, constant prices",
                      "Food Availability per capita"
                      )
@@ -110,11 +110,11 @@ merged_4_wide <- pivot_wider(merged_4,
 colnames(merged_4_wide)
 
 # add import and export Grains and Cereals to Root crops to have them in one column
-merged_4_wide$Total.Grains.Cereals.Root.Export.Quantity = 
+merged_4_wide$Total.Grains.Cereals.Root.Export.Quantity.1000.MT = 
   merged_4_wide$`Root Crops (R&T), Export Quantity, Grain Equiv. 1000 MT` +
   merged_4_wide$`Total Grains/Cereals, Export Quantity, 1000 MT`
 
-merged_4_wide$Total.Grains.Cereals.Root.Import.Quantity = 
+merged_4_wide$Total.Grains.Cereals.Root.Import.Quantity.1000.MT = 
   merged_4_wide$`Total Grains/Cereals, Import Quantity, 1000 MT` +
   merged_4_wide$`Root Crops (R&T), Import Quantity, Grain Equiv. 1000 MT`
 
@@ -141,7 +141,8 @@ merged_4_wide <- merged_4_wide %>%
       "Total Grains/Cereals and Root Crops (R&T), Food Supply, Grain Equiv. 1000 MT",
     "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha" = 
       "Total Grains/Cereals and Root Crops (R&T), Area Harvested, 1000 Ha",
-    "Population.Million" = "Population, Total Population - Both Sexes, Million",                                  
+    "Population.Million" = "Population, Total Population - Both Sexes, Million",
+    "GDP.US.dollars.per.person" = "Economic Data, WB GDP (constant 2005 US$) / FAO population, $/Person",
     "Gross.Domestic.Product.constant.prices.Percent.change" =
       "Economic Data, Gross Domestic Product, constant prices, Percent change",
     "Food.Supply.Grain.Equiv.1000.MT.yr" = 
@@ -149,7 +150,7 @@ merged_4_wide <- merged_4_wide %>%
     "Food.Supply.Grain.Equiv.kg.cap.yr" = "Other, Food Supply, Grain Equiv. kg/cap/yr",
     "Grains.Cereals.Root.Food.Availability.per.capita.kg.cap.yr" =
       "Total Grains/Cereals and Root Crops (R&T), Food Availability per capita, kg/cap/yr"
-    )
+  )
 
 # add continents
 merged_5_final <- merged_4_wide
@@ -167,5 +168,9 @@ missing_values %>% filter(Missing_Values > 0)
 # delete countries having more than 50% missing values, i.e. >= 16 NAs
 countries_to_delete <- c("Burundi", "Eritrea", "Rwanda", "Sudan", "Yemen")
 merged_5_final <- merged_5_final %>% filter(!Country %in% countries_to_delete)
+
+# Remove rows where year is equal to 2013 because this year has a lot of missing values
+merged_5_final <- merged_5_final %>%
+  filter(Year != 2013)
 
 write.csv(merged_5_final, file = "merged_5_final.csv")
