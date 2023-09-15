@@ -20,6 +20,8 @@ library(pastecs)
 
 # Load your data from the CSV file
 data <- read.csv("data/merged_5_final.csv")
+#drop column X that is the index
+data <- data[, -which(names(data) == "X")]
 
 # dict
 data_map_features_names <- c(
@@ -29,7 +31,7 @@ data_map_features_names <- c(
                   "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha" = "Area Harvested (1000 hectares) Grains Cereals and Root",
                   "Population.Million" = "Population in Millions",
                   "GDP.US.dollars.per.person" = "GDP US$ per Million",
-                  "Gross.Domestic.Product.constant.prices.Percent.change" = "Domestic Product price change in percentage",
+                  "GDP.constant.prices.Percent.change" = "GDP price change in percentage",
                   "Food.Supply.Grain.Equiv.1000.MT.yr" = "Food supply (1000 MT per year)",
                   "Food.Supply.Grain.Equiv.kg.cap.yr" = "Food supply kg/capita/year",               
                   "Grains.Cereals.Root.Food.Availability.per.capita.kg.cap.yr" = "Food availability (kg/capita/year) Grains Cereals and Roots",
@@ -37,13 +39,13 @@ data_map_features_names <- c(
                   "Total.Grains.Cereals.Root.Import.Quantity.1000.MT" = "Import quantity Grains (Total), Cereals and Root"
                 )
 
-column_names <- c( "X"="X", "Country"="Country", "Year"="Year", "Temperature Change"="Temperature.Change", 
+column_names <- c( "Country"="Country", "Year"="Year", "Temperature Change"="Temperature.Change", 
                    "Total Grains, Cereals and Root Production Quantity in 1000MT"="Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
                    "Total Grains, Cereals and Root Food Supply in 1000MT"="Total.Grains.Cereals.Root.Food.Supply.1000.MT", 
                    "Total Grains, Cereals and Root Area Harvested in 1000Ha"="Total.Grains.Cereals.Root.Area.Harvested.1000.Ha", 
                    "Population in Millions"="Population.Million", 
                    "GDP in US dollars per person"="GDP.US.dollars.per.person", 
-                   "Gross Domestic Product constant prices percent change"="Gross.Domestic.Product.constant.prices.Percent.change", 
+                   "GDP constant prices percent change"="GDP.constant.prices.Percent.change", 
                    "Food Supply Grain in 1000MT per year"="Food.Supply.Grain.Equiv.1000.MT.yr", 
                    "Food Supply Grain kg/capita/year"="Food.Supply.Grain.Equiv.kg.cap.yr", 
                    "Grains, Cereals and Root Food Availability kg/capita/year"="Grains.Cereals.Root.Food.Availability.per.capita.kg.cap.yr", 
@@ -217,7 +219,8 @@ function(input, output) {
     data2 <- drop_na(subdata)
     numeric_data <- data2 %>%
       select_if(is.numeric)
- # adding if condition in case there are NAs   
+    
+    # adding if condition in case there are NAs   
     if (nrow(data2) >= 10) {
       correlation_matrix <- cor(numeric_data)
       
@@ -313,6 +316,39 @@ function(input, output) {
     
   })
   
+  output$feature_importance_table <- renderTable({
+    data2 <- drop_na(data)
+    sample_index <- sample(1:nrow(data2), 0.8 * nrow(data2)) # 80% for training
+    train_data <- data2[sample_index, ]
+    test_data <- data2[-sample_index, ]
+    
+    # Create a dynamic formula based on user input
+    formula <- as.formula(paste(column_names[input$map_variable3], "~ ."))
+    
+    # Train a Random Forest model
+    rf_model <- randomForest(formula,
+                             data = train_data,
+                             ntree = 500)
+    
+    # Get feature importances from the random forest model
+    importance_scores <- importance(rf_model)
+    
+    # Sort the importance scores in descending order to get the most important features
+    sorted_importance <- importance_scores[order(-importance_scores[, 1]), , drop = FALSE]
+    
+    # You can adjust the number of top features to display, for example, top 10 features
+    top_n_importance <- sorted_importance[1:10, , drop = FALSE]
+    
+    # Create a new data frame with only the first column (names of features)
+    feature_names <- data.frame(Features = rownames(top_n_importance))
+    
+    feature_names <- feature_names %>% 
+      rename("Feature Importance High to Low" = "Features")
+    
+    # Return the table of top N important feature names
+    feature_names
+  }, colnames = TRUE) 
+  
   output$reandom_forest2 <- renderPlot({
     country_pred <- data[data$Country == input$country3, ]
     
@@ -357,4 +393,47 @@ function(input, output) {
               plot.subtitle = element_text(hjust = 0.5))
     }
   })
+  
+  output$feature_importance_table_country <- renderTable({
+    country_pred <- data[data$Country == input$country3, ]
+    
+    data_clean <- drop_na(country_pred)
+    
+    # Check if data_clean is empty
+    if (nrow(data_clean) < 2) {
+      # If data_clean is empty, display a message and stop execution
+      plot.new()
+      text(0.5, 0.5, paste("Sorry, not enough data to perform prediction for", input$country3))
+    } else {
+      sample_index <- sample(1:nrow(data_clean), 0.8 * nrow(data_clean)) # 80% for training
+      train_data <- data_clean[sample_index, ]
+      test_data <- data_clean[-sample_index, ]
+      
+      # Create a dynamic formula based on user input
+      formula <- as.formula(paste(column_names[input$map_variable3], "~ ."))
+      
+      # Train a Random Forest model
+      rf_model <- randomForest(formula,
+                               data = train_data,
+                               ntree = 500)
+      
+      # Get feature importances from the random forest model
+      importance_scores <- importance(rf_model)
+      
+      # Sort the importance scores in descending order to get the most important features
+      sorted_importance <- importance_scores[order(-importance_scores[, 1]), , drop = FALSE]
+      
+      # You can adjust the number of top features to display, for example, top 10 features
+      top_n_importance <- sorted_importance[1:10, , drop = FALSE]
+      
+      # Create a new data frame with only the first column (names of features)
+      feature_names <- data.frame(Features = rownames(top_n_importance))
+      
+      feature_names <- feature_names %>% 
+        rename("Feature Importance High to Low" = "Features")
+      
+      # Return the table of top N important feature names
+      feature_names
+    }
+  }, colnames = TRUE) 
 }

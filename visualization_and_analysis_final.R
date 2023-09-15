@@ -527,3 +527,11 @@ ggplot(prediction_data, aes(x = seq_along(Actual), y = Actual, color = "Actual")
   labs(x = "Sample", y = "Total Grains Cereals Root Production Quantity", color = "Legend") +
   theme_minimal()
 
+# Get feature importances from the random forest model that contributed to our prediction
+importance_scores <- importance(rf_model)
+
+# Sort the importance scores in descending order to get the most important features
+sorted_importance <- importance_scores[order(-importance_scores[, 1]), , drop = FALSE]
+
+# Print the sorted list of most important features
+print(sorted_importance)

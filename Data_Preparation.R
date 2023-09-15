@@ -144,7 +144,7 @@ merged_4_wide <- merged_4_wide %>%
       "Total Grains/Cereals and Root Crops (R&T), Area Harvested, 1000 Ha",
     "Population.Million" = "Population, Total Population - Both Sexes, Million",
     "GDP.US.dollars.per.person" = "Economic Data, WB GDP (constant 2005 US$) / FAO population, $/Person",
-    "Gross.Domestic.Product.constant.prices.Percent.change" =
+    "GDP.constant.prices.Percent.change" =
       "Economic Data, Gross Domestic Product, constant prices, Percent change",
     "Food.Supply.Grain.Equiv.1000.MT.yr" = 
       "Other, Food Supply, Grain Equiv. 1000 MT / yr",

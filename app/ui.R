@@ -4,24 +4,27 @@ library(shiny)
 data <- read.csv("data/merged_5_final.csv")
 formatted_years <- format(data$Year, format = "####")
 
-column_names_edited <- c("X", "Country", "Year", "Temperature Change", 
+#drop column X that is the index
+data <- data[, -which(names(data) == "X")]
+
+column_names_edited <- c("Country", "Year", "Temperature Change", 
                   "Total Grains, Cereals and Root Production Quantity in 1000MT",
                   "Total Grains, Cereals and Root Food Supply in 1000MT", 
                   "Total Grains, Cereals and Root Area Harvested in 1000Ha", 
                   "Population in Millions", "GDP in US dollars per person", 
-                  "Gross Domestic Product constant prices percent change", 
+                  "GDP constant prices percent change", 
                   "Food Supply Grain in 1000MT per year", 
                   "Food Supply Grain kg/capita/year", 
                   "Grains, Cereals and Root Food Availability kg/capita/year", 
                   "Total Grains, Cereals and Root Export Quantity in 1000MT", 
                   "Total Grains, Cereals and Root Import Quantity in 1000MT", 
                   "Continent")
-column_names <- c("X", "Country", "Year", "Temperature.Change", 
+column_names <- c("Country", "Year", "Temperature.Change", 
                   "Total.Grains.Cereals.Root.Production.Quantity.1000.MT",
                   "Total.Grains.Cereals.Root.Food.Supply.1000.MT", 
                   "Total.Grains.Cereals.Root.Area.Harvested.1000.Ha", 
                   "Population.Million", "GDP.US.dollars.per.person", 
-                  "Gross.Domestic.Product.constant.prices.Percent.change", 
+                  "GDP.constant.prices.Percent.change", 
                   "Food.Supply.Grain.Equiv.1000.MT.yr", "Food.Supply.Grain.Equiv.kg.cap.yr", 
                   "Grains.Cereals.Root.Food.Availability.per.capita.kg.cap.yr", 
                   "Total.Grains.Cereals.Root.Export.Quantity.1000.MT", 
@@ -106,10 +109,12 @@ fluidPage(
                         ),
                         mainPanel(
                           fluidRow(
-                            column(12, plotOutput("reandom_forest"))
+                            column(10, plotOutput("reandom_forest")),
+                            column(2, tableOutput("feature_importance_table"))
                           ),
                           fluidRow(
-                            column(12, plotOutput("reandom_forest2"))
+                            column(10, plotOutput("reandom_forest2")),
+                            column(2, tableOutput("feature_importance_table_country"))
                           )
                         )
                       )
