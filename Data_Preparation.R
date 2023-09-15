@@ -14,7 +14,7 @@ library(forcats)
 
 
 ### load data sets
-# 1) dataset for temperature changes in countries 1961 - 2003 in C°
+# 1) dataset for temperature changes in countries 1961 - 1961–2019 in C°
     # source: https://www.kaggle.com/datasets/sevgisarac/temperature-change
 temperature_raw <- read.csv("temperatures.csv", 
                         stringsAsFactors=FALSE, 

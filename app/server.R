@@ -112,7 +112,7 @@ function(input, output) {
                 )) +
       labs(x = "Year",
            y = data_map_features_names[column_names[input$map_variable2]]) +
-      ggtitle(paste(data_map_features_names[input$map_variable2], "in", input$country1, "and", input$country2)) + 
+      ggtitle(paste(data_map_features_names[column_names[input$map_variable2]], "in", input$country1, "and", input$country2)) + 
       theme(plot.background = element_rect(fill = "white"),
             plot.title = element_text(hjust = 0.5, face = "bold"),
             panel.border = element_blank()) +
