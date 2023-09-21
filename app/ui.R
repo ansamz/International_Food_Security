@@ -37,7 +37,7 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           sliderInput("year", "Select a Year", min(data$Year), max(data$Year), value = min(data$Year), step = 1, sep = ""),
-                          selectInput("map_variable", "Select a Variable", choices = column_names_edited[4:14],
+                          selectInput("map_variable", "Select a Variable", choices = column_names_edited[3:14],
                                       selected = "Total Grains, Cereals and Root Production Quantity in 1000MT"), width=3
                         ),
                         mainPanel(
@@ -55,7 +55,7 @@ fluidPage(
                         sidebarPanel(
                           selectInput("country1", "Select Country 1", choices = unique(data$Country)),
                           selectInput("country2", "Select Country 2", choices = unique(data$Country), selected = "Egypt"),
-                          selectInput("map_variable2", "Select Map Variable", choices = column_names_edited[4:14]), width=3
+                          selectInput("map_variable2", "Select Map Variable", choices = column_names_edited[3:14]), width=3
                         ),
                         mainPanel(
                           plotOutput("country_comparison")
@@ -83,7 +83,7 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           selectInput("country_pick", "Select Country", choices = unique(data$Country), selected = "Pakistan"), 
-                          selectInput("selected_items", "Select Variables", choices = column_names_edited[4:14], 
+                          selectInput("selected_items", "Select Variables", choices = column_names_edited[3:14], 
                                       multiple = TRUE, selected = c("Temperature Change",                                  
                                                                     "Total Grains, Cereals and Root Production Quantity in 1000MT",
                                                                     "Total Grains, Cereals and Root Food Supply in 1000MT",
@@ -105,7 +105,7 @@ fluidPage(
                       sidebarLayout(
                         sidebarPanel(
                           selectInput("country3", "Select Country", choices = unique(data$Country)),
-                          selectInput("map_variable3", "Select Variable to Predict", choices = column_names_edited[5:14]), width=3
+                          selectInput("map_variable3", "Select Variable to Predict", choices = column_names_edited[3:14]), width=3
                         ),
                         mainPanel(
                           fluidRow(
